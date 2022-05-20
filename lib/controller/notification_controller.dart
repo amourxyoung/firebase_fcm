@@ -19,21 +19,24 @@ class NotificationController extends GetxController {
   }
 
   // Android용 새 Notification Channel
-   AndroidNotificationChannel androidNotificationChannel = const AndroidNotificationChannel(
+  AndroidNotificationChannel androidNotificationChannel =
+      const AndroidNotificationChannel(
     'high_importance_channel', // 임의의 id
     'High Importance Notifications', // 설정에 보일 채널명
     importance: Importance.high,
   );
 
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
 //token을 못받을수도 있기 때문에 try-catch문 사용
-  Future<void> _getToken() async {
+  Future<String> _getToken() async {
     try {
       String? token = await _messaging.getToken();
-      log(token ?? 'null');
-    } catch (e) {}
+    } catch (e) {
+      return e.toString();
+    }
+    return 'success';
   }
 
 //permission과 configure 세팅
@@ -49,6 +52,7 @@ class NotificationController extends GetxController {
         log(e.toString());
       }
     });
+
     //앱이 꺼지진 않았지만 background에서 돌아가는 상태
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       try {

@@ -13,23 +13,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  FirebaseMessaging.onBackgroundMessage(_firebasePushHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebasePushHandler);
 
-  AwesomeNotifications().initialize(
-      'resource://drawable/logo',
-      [            // notification icon
-        NotificationChannel(
-          channelGroupKey: 'basic_test',
-          channelKey: 'basic',
-          channelName: 'Basic notifications',
-          channelDescription: 'Notification channel for basic tests',
-          channelShowBadge: true,
-          importance: NotificationImportance.High,
-          enableVibration: true,
-        ),
-
-      ]
-  );
+  AwesomeNotifications().initialize('resource://drawable/logo', [
+    // notification icon
+    NotificationChannel(
+      channelGroupKey: 'basic_test',
+      channelKey: 'basic',
+      channelName: 'Basic notifications',
+      channelDescription: 'Notification channel for basic tests',
+      channelShowBadge: true,
+      importance: NotificationImportance.High,
+      enableVibration: true,
+    ),
+  ]);
 
   runApp(MyApp());
 }
@@ -53,22 +50,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void SubscribeTag(String name) async{
-  await FirebaseMessaging.instance.subscribeToTopic(name).then((value)=>log('${name} subscribed!'));
+void SubscribeTag(String name) async {
+  await FirebaseMessaging.instance
+      .subscribeToTopic(name)
+      .then((value) => log('${name} subscribed!'));
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message){
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 1,
-          channelKey: 'basic',
-          title: message.notification?.title,
-          body: message.notification?.body,
-        ),
+      content: NotificationContent(
+        id: 1,
+        channelKey: 'basic',
+        title: message.notification?.title,
+        body: message.notification?.body,
+      ),
     );
   });
 }
 
-Future<void> _firebasePushHandler(RemoteMessage message) async {
-  log('Message from push noti is ${message.data}');
-  AwesomeNotifications().createNotificationFromJsonData(message.data);
-}
+// Future<void> _firebasePushHandler(RemoteMessage message) async {
+//   log('Message from push noti is ${message.data}');
+//   AwesomeNotifications().createNotificationFromJsonData(message.data);
+// }
