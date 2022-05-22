@@ -2,6 +2,7 @@
 
     package="com.test.fcm_exercise">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -26,16 +27,24 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
+                android:name="firebase_messaging_auto_init_enabled"
+                android:value="false" />
+            <meta-data
+                android:name="firebase_analytics_collection_enabled"
+                android:value="false" />
+            <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="high_importance_channel" />
+                android:value="@string/default_notification_channel_id" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- flutter firebase-message 플러그인이 안드로이드 환경에서 data에 해당하는 페이로드를 "FLUTTER_NOTIFICATION_CLICK"로 받기 때문에 설정해줌-->
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -53,5 +62,12 @@
                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
            </intent-filter>
        </service>
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

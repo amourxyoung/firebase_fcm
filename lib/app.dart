@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'second_view.dart';
 import 'main.dart';
+import 'controller/subscribe_controller.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  SubscibeController subscibeController = Get.put(SubscibeController());
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +18,12 @@ class App extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: ()=> SubscribeTag('scholarship'), child: Text('장학금')),
-            ElevatedButton(onPressed: ()=> SubscribeTag('internship'), child: Text('계절학기')),
+            ElevatedButton(
+                onPressed: () => subscibeController.subscribeTag('scholarship'),
+                child: Text('장학금 구독')),
+            ElevatedButton(
+                onPressed: () => subscibeController.subscribeTag('internship'),
+                child: Text('계절학기 구독')),
           ],
         ),
       ),
