@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
+///앱이 [background상태]일때 수신되는 message를 처리하는 부분이다.
 Future<dynamic> onBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   log("onBackgroundMessage: ${message.data}");
@@ -18,6 +19,8 @@ Future<dynamic> onBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  ///[background상태]에서 푸쉬 알람 출력
   FirebaseMessaging.onBackgroundMessage(onBackgroundHandler);
   runApp(MyApp());
 }
